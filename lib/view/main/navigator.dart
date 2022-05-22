@@ -13,6 +13,7 @@ import 'package:brindavan_student/view/main/pages/theme.dart';
 import 'package:brindavan_student/services/auth.dart';
 import 'package:brindavan_student/services/database.dart';
 import 'package:brindavan_student/utils/loading.dart';
+import 'package:brindavan_student/view/main/pages/warningView.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:provider/provider.dart';
@@ -97,6 +98,8 @@ class _NavigateState extends State<Navigate>
                 // ignore: unnecessary_null_comparison
                 if (userData!.fullName.isEmpty) {
                   return EnterDetails(userData: userData);
+                } else if (!userData.isActive) {
+                  return const UserInactive();
                 } else {
                   return Scaffold(
                       extendBody: true,

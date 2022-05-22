@@ -75,10 +75,7 @@ class _HomeState extends State<Home> {
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            userData.fullName.text.lg
-                                .color(MyColor.brandColor!)
-                                .bold
-                                .make(),
+                            userData.fullName.text.lg.bold.make(),
                             userData.usn.text.uppercase.base.make(),
                           ]),
                       const Spacer(),

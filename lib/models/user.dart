@@ -1,4 +1,3 @@
-
 class MyUser {
   final String uid;
   final String? email;
@@ -7,9 +6,9 @@ class MyUser {
 
   factory MyUser.fromJson(Map<String, dynamic> json) {
     return MyUser(
-        uid: json['uid'],
-        email: json['email'],
-        );
+      uid: json['uid'],
+      email: json['email'],
+    );
   }
 }
 
@@ -20,6 +19,7 @@ class UserData {
   final int? sem;
   final String branch;
   final String section;
+  final bool isActive;
   final String avatar;
 
   UserData({
@@ -28,18 +28,20 @@ class UserData {
     required this.sem,
     required this.branch,
     required this.section,
+    required this.isActive,
     required this.avatar,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
     return UserData(
-        usn: json['usn'],
-        fullName: json['fullName'],
-        sem: json['sem'],
-        branch: json['branch'],
-        section: json['section'],
-        avatar: json['avatar'],
-        );
+      usn: json['usn'],
+      fullName: json['fullName'],
+      sem: json['sem'],
+      branch: json['branch'],
+      section: json['section'],
+      isActive: json['isActive'],
+      avatar: json['avatar'],
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -53,4 +55,3 @@ class UserData {
     };
   }
 }
-

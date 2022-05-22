@@ -33,7 +33,7 @@ class AuthService {
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+          email: email.trim(), password: password);
       User? user = result.user;
       print(user!.uid);
 
@@ -49,7 +49,7 @@ class AuthService {
       String email, String password, String usn, int sem) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+          email: email.trim(), password: password);
       User? user = result.user;
       await DatabaseService().updateUserData(usn, '', sem, '', '');
       return _userFromFirebaseUser(user!);
