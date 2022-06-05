@@ -38,11 +38,10 @@ class _LoginState extends State<Login> {
         ? const Loading()
         : Scaffold(
             backgroundColor: Theme.of(context).backgroundColor,
-                        resizeToAvoidBottomInset: true,
-
+            resizeToAvoidBottomInset: true,
             body: GestureDetector(
               onTap: () {
-                FocusScope.of(context).requestFocus( FocusNode());
+                FocusScope.of(context).requestFocus(FocusNode());
               },
               child: SingleChildScrollView(
                 child: Container(
@@ -55,18 +54,18 @@ class _LoginState extends State<Login> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            child: logo,
                             decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.05),
                                   spreadRadius: 0,
                                   blurRadius: 16,
-                                  offset:
-                                      const Offset(0, 16), // changes position of shadow
+                                  offset: const Offset(
+                                      0, 16), // changes position of shadow
                                 ),
                               ],
                             ),
+                            child: logo,
                           ).p12(),
                           Container(
                             child: 'Login'
@@ -102,7 +101,6 @@ class _LoginState extends State<Login> {
                                 hintText: 'Enter Email',
                                 labelText: 'Email',
                                 prefixIcon: const Icon(Icons.mail),
-                                
                                 enabledBorder: enabledBorder,
                                 fillColor: fillColor),
                             onChanged: (val) {
@@ -152,7 +150,8 @@ class _LoginState extends State<Login> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const ResetScreen()));
+                                      builder: (context) =>
+                                          const ResetScreen()));
                             },
                             child: 'forgot password?'
                                 .text
@@ -172,8 +171,8 @@ class _LoginState extends State<Login> {
                                       setState(() {
                                         loading = true;
                                       });
-                                      dynamic result =
-                                          await _auth.signInWithEmailAndPassword(
+                                      dynamic result = await _auth
+                                          .signInWithEmailAndPassword(
                                               email, password);
                                       if (result == null) {
                                         setState(() {
@@ -203,6 +202,7 @@ class _LoginState extends State<Login> {
             ),
           );
   }
+
   void _togglePasswordView() {
     setState(() {
       isHiddenPassword = !isHiddenPassword;
