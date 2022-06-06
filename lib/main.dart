@@ -1,4 +1,6 @@
+import 'package:brindavan_student/models/gSheetsCred.dart';
 import 'package:brindavan_student/models/user.dart';
+import 'package:brindavan_student/provider/data_provider.dart';
 import 'package:brindavan_student/view/splash_creen.dart';
 import 'package:brindavan_student/services/auth.dart';
 import 'package:brindavan_student/theme/theme_provider.dart';
@@ -13,7 +15,17 @@ Future<void> main() async {
       debug: true // optional: set false to disable printing logs to console
       );
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  await UserSheetsApi(sheetName: '', spreadsheetId: '').init();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => DataProvider()),
+        // Provider(create: (context) => DataProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {

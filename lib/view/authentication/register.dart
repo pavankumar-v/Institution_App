@@ -56,7 +56,6 @@ class _RegisterState extends State<Register> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            child: logo,
                             decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
@@ -68,6 +67,7 @@ class _RegisterState extends State<Register> {
                                 ),
                               ],
                             ),
+                            child: logo,
                           ).p12(),
                           Container(
                             child: 'Register'
@@ -104,8 +104,8 @@ class _RegisterState extends State<Register> {
                               children: [
                                 TextFormField(
                                   inputFormatters: [
-                                    FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"))
-
+                                    FilteringTextInputFormatter.deny(
+                                        RegExp(r"\s\b|\b\s"))
                                   ],
                                   maxLength: 10,
                                   textCapitalization:
@@ -113,7 +113,8 @@ class _RegisterState extends State<Register> {
                                   decoration: textInputDecoration.copyWith(
                                       hintText: 'Enter USN',
                                       labelText: 'USN',
-                                      prefixIcon: const Icon(Icons.badge_rounded),
+                                      prefixIcon:
+                                          const Icon(Icons.badge_rounded),
                                       enabledBorder: enabledBorder,
                                       fillColor: fillColor,
                                       counter: const SizedBox.shrink()),
@@ -132,7 +133,6 @@ class _RegisterState extends State<Register> {
                                     } else if (val.length > 11) {
                                       return 'Enter valid USN';
                                     }
-
                                     return null;
                                   },
                                 ).px32().py12().w64(context),
@@ -231,7 +231,7 @@ class _RegisterState extends State<Register> {
                                       });
                                       dynamic result = await _db
                                           .checkUsn(usn!.toLowerCase());
-
+                                      print(result);
                                       if (result == true) {
                                         dynamic authResult = await _auth
                                             .registerWithEmailAndPassword(
@@ -274,6 +274,7 @@ class _RegisterState extends State<Register> {
             ),
           );
   }
+
   void _togglePasswordView() {
     setState(() {
       isHiddenPassword = !isHiddenPassword;

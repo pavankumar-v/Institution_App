@@ -2,7 +2,9 @@ import 'dart:math';
 import 'package:brindavan_student/models/user.dart';
 import 'package:brindavan_student/provider/data_provider.dart';
 import 'package:brindavan_student/view/main/pages/attendanceView.dart';
+import 'package:brindavan_student/view/main/pages/dynamicForms.dart';
 import 'package:brindavan_student/view/main/pages/enter_details.dart';
+import 'package:brindavan_student/view/main/pages/gSheets.dart';
 import 'package:brindavan_student/view/main/pages/home.dart';
 import 'package:brindavan_student/view/main/pages/notification.dart';
 import 'package:brindavan_student/view/main/pages/placementView.dart';
@@ -41,6 +43,7 @@ class _NavigateState extends State<Navigate>
   String? imgUrl;
 
   bool loading = false;
+
   int _currentIndex = 0;
   List<Widget> tabs = [
     const Home(),
@@ -67,9 +70,7 @@ class _NavigateState extends State<Navigate>
   void initState() {
     _initImg();
     final dataProvider = Provider.of<DataProvider>(context, listen: false);
-
     data = dataProvider.userData;
-
     super.initState();
   }
 
@@ -260,6 +261,43 @@ class _NavigateState extends State<Navigate>
                                               Icons.app_registration_rounded,
                                             ),
                                             title: 'Attendace'.text.make(),
+                                          ),
+                                        ).p12(),
+                                        ElevatedButton(
+                                          style: buttonStyle,
+                                          onPressed: () {
+                                            Future.delayed(
+                                                const Duration(
+                                                    milliseconds: 200), () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const DynamicForms()));
+                                            });
+                                          },
+                                          child: ListTile(
+                                            leading: const Icon(
+                                              Icons.description_rounded,
+                                            ),
+                                            title: 'Forms'.text.make(),
+                                          ),
+                                        ).p12(),
+                                        ElevatedButton(
+                                          style: buttonStyle,
+                                          onPressed: () {
+                                            Future.delayed(
+                                                const Duration(
+                                                    milliseconds: 200), () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const Gsheets()));
+                                            });
+                                          },
+                                          child: ListTile(
+                                            leading: const Icon(
+                                                Icons.description_rounded),
+                                            title: 'Gsheets'.text.make(),
                                           ),
                                         ).p12(),
                                         ElevatedButton(

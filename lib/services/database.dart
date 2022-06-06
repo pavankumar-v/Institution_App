@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:brindavan_student/models/dynamicFormModel.dart';
 import 'package:brindavan_student/models/notificationdata.dart';
 import 'package:brindavan_student/models/subjects.dart';
 import 'package:brindavan_student/models/user.dart';
@@ -45,7 +46,6 @@ class DatabaseService {
   // Upsert
   Future updateUserData(String usn, String fullName, int sem, String section,
       String branch) async {
-    print('database updated');
     try {
       var url =
           'https://firebasestorage.googleapis.com/v0/b/brindavan-student-app.appspot.com/o/assets%2Favatars%2Fstudents%2Fdefault.png?alt=media&token=9ccbf074-a4e0-41bf-bba7-6fef4c4c54bf';
@@ -55,7 +55,8 @@ class DatabaseService {
         'sem': sem,
         'section': section,
         'branch': branch,
-        'avatar': url
+        'avatar': url,
+        'isActive': true,
       }, SetOptions(merge: true));
     } catch (e) {
       print(e.toString());
@@ -79,7 +80,6 @@ class DatabaseService {
 
   // stream  user data
   Stream<UserData> curUserData() {
-    print('user Stream Called');
     return _db.collection('users').doc(_auth.currentUser!.uid).snapshots().map(
         (DocumentSnapshot<Map<String, dynamic>> snapshot) =>
             UserData.fromJson(snapshot.data()!));
@@ -100,14 +100,31 @@ class DatabaseService {
             .toList());
   }
 
+  Stream<List<DynamicFormData?>?> getForms() {
+    return _db
+        .collection('global')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => DynamicFormData.fromJson(doc.data()))
+            .toList());
+  }
+
+  void foo() async {
+    final QuerySnapshot result = await _db.collection('global').get();
+    final List<DocumentSnapshot> documents = result.docs;
+
+    for (var doc in documents) {
+      print(doc.id);
+      print(doc.data());
+    }
+  }
+
   Stream<List<Subjects?>?> getSubjects() {
-    print('subjectScreamCalled');
-    print('branch' + branch!);
-    print('sem' + sem!);
     return _db
         .collection('branch')
-        .doc('${branch.toString().toLowerCase()}')
-        .collection('${sem.toString()}')
+        .doc(branch.toString().toLowerCase())
+        .collection(sem.toString())
         .orderBy('id')
         .snapshots()
         .map((snapshot) =>
@@ -124,12 +141,12 @@ class DatabaseService {
           .then((value) => value.data()!);
       return result;
     } catch (e) {
-      print('error' + e.toString());
+      print('error$e');
       return null;
     }
   }
 
-   Future<dynamic> getImg() {
+  Future<dynamic> getImg() {
     var result = _db
         .collection('assets')
         .doc('drawer_bg')
@@ -138,7 +155,4 @@ class DatabaseService {
 
     return result;
   }
-
-
 }
-

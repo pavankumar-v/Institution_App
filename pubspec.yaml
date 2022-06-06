@@ -38,7 +38,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   velocity_x: ^3.4.0
-  google_fonts: ^2.3.2
+  google_fonts: ^3.0.1
   #firebase
   firebase_core: ^1.17.0
   firebase_auth: ^3.3.18
@@ -53,6 +53,7 @@ dev_dependencies:
   cached_network_image: ^3.2.0
   shared_preferences: ^2.0.15
   date_picker_timeline: ^1.2.3
+  gsheets: ^0.4.2
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

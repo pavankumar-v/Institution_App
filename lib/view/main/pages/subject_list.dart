@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:brindavan_student/models/subjects.dart';
 import 'package:brindavan_student/provider/data_provider.dart';
 import 'package:brindavan_student/view/main/pages/subject.dart';
@@ -27,17 +26,16 @@ class _SubjectListState extends State<SubjectList> {
     '#36474f',
     '#8800C1',
   ];
+
   @override
   Widget build(BuildContext context) {
     final dataProvider = Provider.of<DataProvider>(context);
-
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(elevation: 0, title: 'Subjects'.text.xl3.bold.make()),
+      appBar: AppBar(elevation: 0, title: 'Subject'.text.xl3.bold.make()),
       body: StreamBuilder<List<Subjects?>?>(
           stream: dataProvider.usersubjects,
           builder: (context, snapshot) {
-            print('data');
             if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               return SingleChildScrollView(
                 child: Column(
