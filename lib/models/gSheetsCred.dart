@@ -49,8 +49,10 @@ class UserSheetsApi {
     try {
       if (_userSheet == null) return;
       _userSheet!.values.map.appendRow(rowList);
+      return true;
     } catch (e) {
       print('insert Error $e');
+      return null;
     }
   }
 }

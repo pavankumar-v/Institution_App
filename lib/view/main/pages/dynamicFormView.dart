@@ -17,6 +17,8 @@ class DynamicFormPAge extends StatefulWidget {
 
 class _DynamicFormPAgeState extends State<DynamicFormPAge> {
   final _formKey = GlobalKey<FormState>();
+  bool _loading = false;
+  String msg = '';
   //
   // List<dynamic> formData = [
   //   {"type": "s", "fieldName": "usn"},
@@ -89,32 +91,53 @@ class _DynamicFormPAgeState extends State<DynamicFormPAge> {
                             primary: Theme.of(context).primaryColor,
                             onPrimary: Colors.black.withOpacity(0.05),
                           ),
-                          onPressed: () async {
-                            await UserSheetsApi(
-                                    spreadsheetId: data.formId,
-                                    sheetName: data.sheetName)
-                                .init();
-                            _values!
-                                .sort((a, b) => (a['id']).compareTo(b['id']));
-                            Map<String, dynamic> formDataValues = {};
-                            if (_formKey.currentState!.validate()) {
-                              for (int i = 0; i < _values!.length; i++) {
-                                formDataValues.addEntries([
-                                  MapEntry(
-                                      data.form[i]['fieldName'].toString(),
-                                      _values![i][
-                                          data.form[i]['fieldName'].toString()])
-                                ]);
+                          onPressed: !_loading
+                              ? () async {
+                                  setState(() {
+                                    _loading = true;
+                                  });
+                                  await UserSheetsApi(
+                                          spreadsheetId: data.formId,
+                                          sheetName: data.sheetName)
+                                      .init();
+                                  _values!.sort(
+                                      (a, b) => (a['id']).compareTo(b['id']));
+                                  Map<String, dynamic> formDataValues = {};
+                                  if (_formKey.currentState!.validate()) {
+                                    for (int i = 0; i < _values!.length; i++) {
+                                      formDataValues.addEntries([
+                                        MapEntry(
+                                            data.form[i]['fieldName']
+                                                .toString(),
+                                            _values![i][data.form[i]
+                                                    ['fieldName']
+                                                .toString()])
+                                      ]);
 
-                                await UserSheetsApi(
-                                        spreadsheetId: data.formId,
-                                        sheetName: data.sheetName)
-                                    .insert(formDataValues);
-                              }
-                            }
-                          },
+                                      dynamic result = await UserSheetsApi(
+                                              spreadsheetId: data.formId,
+                                              sheetName: data.sheetName)
+                                          .insert(formDataValues);
+
+                                      print(result);
+
+                                      if (result != null) {
+                                        setState(() {
+                                          _loading = false;
+                                          msg = "data updated successfully";
+                                        });
+                                      }
+                                    }
+                                  } else {
+                                    setState(() {
+                                      _loading = false;
+                                    });
+                                  }
+                                }
+                              : null,
                           child: 'SUBMIT'.text.sm.bold.white.make().p16().px1())
                       .p16(),
+                  _loading ? const CircularProgressIndicator() : msg.text.make()
                 ],
               ),
             ),
