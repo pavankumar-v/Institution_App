@@ -4,7 +4,6 @@ import 'package:brindavan_student/provider/data_provider.dart';
 import 'package:brindavan_student/view/main/pages/attendanceView.dart';
 import 'package:brindavan_student/view/main/pages/dynamicForms.dart';
 import 'package:brindavan_student/view/main/pages/enter_details.dart';
-import 'package:brindavan_student/view/main/pages/gSheets.dart';
 import 'package:brindavan_student/view/main/pages/home.dart';
 import 'package:brindavan_student/view/main/pages/notification.dart';
 import 'package:brindavan_student/view/main/pages/placementView.dart';
@@ -280,24 +279,6 @@ class _NavigateState extends State<Navigate>
                                               Icons.description_rounded,
                                             ),
                                             title: 'Forms'.text.make(),
-                                          ),
-                                        ).p12(),
-                                        ElevatedButton(
-                                          style: buttonStyle,
-                                          onPressed: () {
-                                            Future.delayed(
-                                                const Duration(
-                                                    milliseconds: 200), () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const Gsheets()));
-                                            });
-                                          },
-                                          child: ListTile(
-                                            leading: const Icon(
-                                                Icons.description_rounded),
-                                            title: 'Gsheets'.text.make(),
                                           ),
                                         ).p12(),
                                         ElevatedButton(

@@ -21,8 +21,8 @@ class DatabaseService {
           .collection('usncollection')
           .doc('mq6CKVtsEqBoCJvMyeQQ')
           .get()
-          .then((value) => {(value.data()!['$usn'])});
-      return result.contains(false);
+          .then((doc) => doc.data()![usn]);
+      return result;
     } catch (e) {
       print(e.toString());
       return null;
@@ -108,16 +108,6 @@ class DatabaseService {
         .map((snapshot) => snapshot.docs
             .map((doc) => DynamicFormData.fromJson(doc.data()))
             .toList());
-  }
-
-  void foo() async {
-    final QuerySnapshot result = await _db.collection('global').get();
-    final List<DocumentSnapshot> documents = result.docs;
-
-    for (var doc in documents) {
-      print(doc.id);
-      print(doc.data());
-    }
   }
 
   Stream<List<Subjects?>?> getSubjects() {

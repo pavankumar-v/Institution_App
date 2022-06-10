@@ -37,10 +37,11 @@ class AuthService {
       User? user = result.user;
       print(user!.uid);
 
-      return _userFromFirebaseUser(user);
+      _userFromFirebaseUser(user);
+      return true;
     } catch (e) {
       print(e.toString());
-      return null;
+      return false;
     }
   }
 
@@ -52,10 +53,11 @@ class AuthService {
           email: email.trim(), password: password);
       User? user = result.user;
       await DatabaseService().updateUserData(usn, '', sem, '', '');
-      return _userFromFirebaseUser(user!);
+      _userFromFirebaseUser(user!);
+      return true;
     } catch (e) {
       print(e.toString());
-      return null;
+      return false;
     }
   }
 

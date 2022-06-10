@@ -2,7 +2,6 @@ import 'package:brindavan_student/view/authentication/reset.dart';
 import 'package:brindavan_student/services/auth.dart';
 import 'package:brindavan_student/utils/constants.dart';
 import 'package:brindavan_student/utils/loading.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -21,6 +20,7 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
 
   bool loading = false;
+  bool _pageLoading = false;
   bool isHiddenPassword = true;
 
   // text field state
@@ -38,11 +38,10 @@ class _LoginState extends State<Login> {
         ? const Loading()
         : Scaffold(
             backgroundColor: Theme.of(context).backgroundColor,
-                        resizeToAvoidBottomInset: true,
-
+            resizeToAvoidBottomInset: true,
             body: GestureDetector(
               onTap: () {
-                FocusScope.of(context).requestFocus( FocusNode());
+                FocusScope.of(context).requestFocus(FocusNode());
               },
               child: SingleChildScrollView(
                 child: Container(
@@ -55,18 +54,18 @@ class _LoginState extends State<Login> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            child: logo,
                             decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.05),
                                   spreadRadius: 0,
                                   blurRadius: 16,
-                                  offset:
-                                      const Offset(0, 16), // changes position of shadow
+                                  offset: const Offset(
+                                      0, 16), // changes position of shadow
                                 ),
                               ],
                             ),
+                            child: logo,
                           ).p12(),
                           Container(
                             child: 'Login'
@@ -102,7 +101,6 @@ class _LoginState extends State<Login> {
                                 hintText: 'Enter Email',
                                 labelText: 'Email',
                                 prefixIcon: const Icon(Icons.mail),
-                                
                                 enabledBorder: enabledBorder,
                                 fillColor: fillColor),
                             onChanged: (val) {
@@ -152,7 +150,8 @@ class _LoginState extends State<Login> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const ResetScreen()));
+                                      builder: (context) =>
+                                          const ResetScreen()));
                             },
                             child: 'forgot password?'
                                 .text
@@ -167,23 +166,28 @@ class _LoginState extends State<Login> {
                                     primary: Theme.of(context).primaryColor,
                                     onPrimary: Colors.black.withOpacity(0.05),
                                   ),
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      setState(() {
-                                        loading = true;
-                                      });
-                                      dynamic result =
-                                          await _auth.signInWithEmailAndPassword(
-                                              email, password);
-                                      if (result == null) {
-                                        setState(() {
-                                          error =
-                                              'Either email is not registered or password is wrong';
-                                          loading = false;
-                                        });
-                                      }
-                                    }
-                                  },
+                                  onPressed: !_pageLoading
+                                      ? () async {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            setState(() {
+                                              _pageLoading = true;
+                                            });
+                                            dynamic result = await _auth
+                                                .signInWithEmailAndPassword(
+                                                    email, password);
+                                            if (!result) {
+                                              setState(() {
+                                                error =
+                                                    'Either email is not registered or password is wrong';
+                                                _pageLoading = false;
+                                              });
+                                            } else {
+                                              loading = true;
+                                            }
+                                          }
+                                        }
+                                      : null,
                                   child: 'LOGIN'
                                       .text
                                       .sm
@@ -193,6 +197,9 @@ class _LoginState extends State<Login> {
                                       .p16()
                                       .px1())
                               .p16(),
+                          _pageLoading
+                              ? const CircularProgressIndicator()
+                              : Container(),
                           error.text.red500.center.make().px24().py12()
                         ],
                       ).p12().py64(),
@@ -203,6 +210,7 @@ class _LoginState extends State<Login> {
             ),
           );
   }
+
   void _togglePasswordView() {
     setState(() {
       isHiddenPassword = !isHiddenPassword;

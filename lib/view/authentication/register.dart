@@ -22,6 +22,7 @@ class _RegisterState extends State<Register> {
   final DatabaseService _db = DatabaseService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
+  bool _pageLoading = false;
   bool isHiddenPassword = true;
 
   //Text Field
@@ -223,38 +224,44 @@ class _RegisterState extends State<Register> {
                           ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       primary: Theme.of(context).primaryColor),
-                                  onPressed: () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      print(usn);
-                                      setState(() {
-                                        loading = true;
-                                      });
-                                      dynamic result = await _db
-                                          .checkUsn(usn!.toLowerCase());
-                                      print(result);
-                                      if (result == true) {
-                                        dynamic authResult = await _auth
-                                            .registerWithEmailAndPassword(
-                                                email!,
-                                                password!,
-                                                usn!.toLowerCase(),
-                                                sem!);
-                                        if (authResult == null) {
-                                          setState(() {
-                                            error =
-                                                'The email address is already in use by another account';
-                                            loading = false;
-                                          });
+                                  onPressed: !_pageLoading
+                                      ? () async {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            print(usn);
+                                            setState(() {
+                                              _pageLoading = true;
+                                            });
+                                            dynamic result = await _db
+                                                .checkUsn(usn!.toLowerCase());
+                                            print(result);
+
+                                            if (!result) {
+                                              dynamic authResult = await _auth
+                                                  .registerWithEmailAndPassword(
+                                                      email!,
+                                                      password!,
+                                                      usn!.toLowerCase(),
+                                                      sem!);
+                                              if (!authResult) {
+                                                setState(() {
+                                                  error =
+                                                      'The email address is already in use by another account';
+                                                  _pageLoading = false;
+                                                });
+                                              } else {
+                                                loading = true;
+                                              }
+                                            } else {
+                                              setState(() {
+                                                error =
+                                                    'USN is already registered or Not available for registration';
+                                                loading = false;
+                                              });
+                                            }
+                                          }
                                         }
-                                      } else {
-                                        setState(() {
-                                          error =
-                                              'USN is already registered or Not available for registration';
-                                          loading = false;
-                                        });
-                                      }
-                                    }
-                                  },
+                                      : null,
                                   child: 'REGISTER'
                                       .text
                                       .sm
@@ -264,6 +271,9 @@ class _RegisterState extends State<Register> {
                                       .p16()
                                       .px1())
                               .p16(),
+                          _pageLoading
+                              ? const CircularProgressIndicator()
+                              : Container(),
                           error.text.red500.center.make().px24().py12()
                         ],
                       ).p12().py64(),
