@@ -68,25 +68,38 @@ class _NotificationWidgetState extends State<NotificationWidget> {
             ),
             SelectableText(
               data.title,
-              style: TextStyle(
+              style: const TextStyle(
                   height: 1.5, fontSize: 16, fontWeight: FontWeight.bold),
             ),
             // data.title.text.lg.bold.make(),
             const SizedBox(
               height: 10,
             ),
-            
+
             SelectableLinkify(
               text: data.description,
               onOpen: (link) async {
-                if (await canLaunch(link.url)) {
-                await launch(link.url);
-                } else {
-                throw 'Could not launch $link';
+                final Uri url = Uri.parse(link.url);
+
+                Future<void> _launchInBrowser(Uri url) async {
+                  if (!await launchUrl(
+                    url,
+                    mode: LaunchMode.externalApplication,
+                  )) {
+                    throw 'Could not launch $url';
                   }
-                },
-              options: LinkifyOptions(humanize: false),
-              style: TextStyle(height: 1.5, fontSize: 12),
+                }
+
+                await _launchInBrowser(url);
+
+                // if (await canLaunchUrl(url)) {
+                //   await launchUrl(url);
+                // } else {
+                //   throw 'Could not launch $link';
+                // }
+              },
+              options: const LinkifyOptions(humanize: false),
+              style: const TextStyle(height: 1.5, fontSize: 12),
             ),
             // data.description.text.lineHeight(1.5).sm.make(),
           ],
