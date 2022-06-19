@@ -91,12 +91,6 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                 }
 
                 await _launchInBrowser(url);
-
-                // if (await canLaunchUrl(url)) {
-                //   await launchUrl(url);
-                // } else {
-                //   throw 'Could not launch $link';
-                // }
               },
               options: const LinkifyOptions(humanize: false),
               style: const TextStyle(height: 1.5, fontSize: 12),
