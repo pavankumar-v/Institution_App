@@ -4,6 +4,7 @@ import 'package:brindavan_student/utils/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../reusable_widget/notification_card_widget.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class RecentNotification extends StatefulWidget {
   const RecentNotification({Key? key}) : super(key: key);
@@ -34,18 +35,24 @@ class _RecentNotificationState extends State<RecentNotification> {
         stream: notificationData,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                // scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: 2,
-                itemBuilder: (context, index) {
-                  var data = snapshot.data![index];
-                  return NotificationWidget(
-                      notification: data); // passing into widget constructor
-                });
+            if (snapshot.data!.length > 2) {
+              return ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  // scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: 2,
+                  itemBuilder: (context, index) {
+                    var data = snapshot.data![index];
+                    return NotificationWidget(
+                        notification: data); // passing into widget constructor
+                  });
+            } else {
+              return Center(
+                child: "No Recent Posts".text.make(),
+              );
+            }
           } else {
-            return Loading();
+            return const Loading();
           }
         });
   }

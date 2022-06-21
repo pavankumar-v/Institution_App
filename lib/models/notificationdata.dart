@@ -5,6 +5,7 @@ class NotificationData {
   final String description;
   final String createdAt;
   final String avatar;
+  final List tags;
 
   NotificationData(
       {required this.fullName,
@@ -12,7 +13,8 @@ class NotificationData {
       required this.title,
       required this.description,
       required this.createdAt,
-      required this.avatar});
+      required this.avatar,
+      required this.tags});
 
   factory NotificationData.fromJson(Map<String, dynamic> json) {
     return NotificationData(
@@ -21,7 +23,8 @@ class NotificationData {
         title: json['title'],
         description: json['description'],
         createdAt: json['createdAt'],
-        avatar: json['avatar']);
+        avatar: json['avatar'],
+        tags: json['tags']);
   }
 
   Map<String, dynamic> toMap() {

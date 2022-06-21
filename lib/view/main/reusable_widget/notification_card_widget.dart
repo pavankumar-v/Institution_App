@@ -95,6 +95,8 @@ class _NotificationWidgetState extends State<NotificationWidget> {
               options: const LinkifyOptions(humanize: false),
               style: const TextStyle(height: 1.5, fontSize: 12),
             ),
+
+            "${data.tags}".text.make()
             // data.description.text.lineHeight(1.5).sm.make(),
           ],
         ).p(23),

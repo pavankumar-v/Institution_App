@@ -56,7 +56,14 @@ class _NotificationListState extends State<NotificationList> {
                               .px(20); // passing into widget constructor
                         });
                   } else {
-                    return const Loading();
+                    return Center(
+                      child: "Noting Found"
+                          .text
+                          .lg
+                          .bold
+                          .color(Theme.of(context).hintColor)
+                          .make(),
+                    );
                   }
                 }));
   }

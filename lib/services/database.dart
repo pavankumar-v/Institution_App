@@ -90,15 +90,17 @@ class DatabaseService {
     print('notification Stream Called');
     return _db
         .collection('notifications')
-        // .where('createdAt',
-        //     isGreaterThan:
-        //         DateTime.now().add(Duration(days: -10)).toIso8601String())
         .orderBy('createdAt', descending: true)
+        // .where("tags", arrayContains: "cse")
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => NotificationData.fromJson(doc.data()))
             .toList());
   }
+
+  // Future<dynamic> getDocs(){
+
+  // }
 
   Stream<List<DynamicFormData?>?> getForms() {
     return _db
