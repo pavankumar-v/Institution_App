@@ -26,4 +26,6 @@ class DataProvider with ChangeNotifier {
       ], "branch/${branch!.toLowerCase()}/notifications");
   Stream<List<NotificationData?>?> get notificationAll =>
       DatabaseService().getNotifications(["all"], "notifications");
+
+  Future<dynamic> get appConfig => DatabaseService().appConfig();
 }

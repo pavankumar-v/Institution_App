@@ -81,7 +81,7 @@ class _AttendanceState extends State<Attendance> {
                         });
                       }
                     },
-                    icon: const Icon(Icons.calendar_today_rounded))
+                    icon: const Icon(Icons.calendar_today_rounded)),
               ],
             ),
             StreamBuilder<QuerySnapshot>(
@@ -92,11 +92,12 @@ class _AttendanceState extends State<Attendance> {
                     return const Text('something went wrong');
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text('Loading');
+                    return const CircularProgressIndicator();
                   }
                   String? date = formatter.format(_dateTime).toString();
 
                   return ListView(
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       children:
                           snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -118,10 +119,12 @@ class _AttendanceState extends State<Attendance> {
                             .where((val) => val.startsWith(
                                 widget.userData.usn.toString().toUpperCase()))
                             .toList();
+
+                        print(attendanceList);
                         return ListView.builder(
-                            addAutomaticKeepAlives: true,
+                            // addAutomaticKeepAlives: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.vertical,
+                            // scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             itemCount: attendanceList.length,
                             itemBuilder: (conetext, index) {

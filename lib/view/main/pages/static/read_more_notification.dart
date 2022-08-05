@@ -72,9 +72,11 @@ class _ReadMoreNotificationState extends State<ReadMoreNotification> {
               // text: data.description,
               text: data.description,
               onOpen: (link) async {
+                print(link);
                 final Uri url = Uri.parse(link.url);
 
                 Future<void> _launchInBrowser(Uri url) async {
+                  print("url: $url");
                   if (!await launchUrl(
                     url,
                     mode: LaunchMode.externalApplication,

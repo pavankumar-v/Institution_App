@@ -19,6 +19,15 @@ class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
 
+  // app config
+  Future<dynamic> appConfig() async {
+    return await _db
+        .collection("app_configurations")
+        .doc("app")
+        .get()
+        .then((value) => value.data());
+  }
+
   //get usn true or false
   Future checkUsn(usn, branch) async {
     try {

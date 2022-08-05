@@ -69,3 +69,20 @@ SnackBar snackbar(context, message, duration) {
   );
   return snackBar;
 }
+
+ElevatedButton btn(context, fun, value, size) {
+  return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: const StadiumBorder(),
+        primary: Theme.of(context).colorScheme.primary,
+      ),
+      onPressed: () async {
+        await fun();
+      },
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxWidth: 115,
+        ),
+        child: '$value'.text.size(size).make(),
+      ));
+}

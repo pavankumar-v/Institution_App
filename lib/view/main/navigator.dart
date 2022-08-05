@@ -92,7 +92,7 @@ class _NavigateState extends State<Navigate>
     super.build(context);
 
     return loading
-        ? const Loading()
+        ? Center(child: CircularProgressIndicator())
         : StreamBuilder<UserData?>(
             stream: data,
             builder: (context, snapshot) {

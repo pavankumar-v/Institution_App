@@ -1,9 +1,9 @@
 import 'package:brindavan_student/models/gSheetsCred.dart';
 import 'package:brindavan_student/models/user.dart';
 import 'package:brindavan_student/provider/data_provider.dart';
-import 'package:brindavan_student/view/splash_creen.dart';
 import 'package:brindavan_student/services/auth.dart';
 import 'package:brindavan_student/theme/theme_provider.dart';
+import 'package:brindavan_student/view/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-            home: const SplashScreen(),
+            home: const Wrapper(),
           ),
         );
       }),
