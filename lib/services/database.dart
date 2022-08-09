@@ -210,7 +210,7 @@ class DatabaseService {
 
   Stream<List<DynamicFormData?>?> getForms() {
     return _db
-        .collection('global')
+        .collection('forms')
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs

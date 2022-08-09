@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     timer!.cancel();
-    // super.dispose();
+    super.dispose();
   }
 
   @override
@@ -95,7 +95,9 @@ class _HomeState extends State<Home> {
                     child: Text("Something went wrong"),
                   );
                 }
+
                 if (snapshot.hasData) {
+                  print(snapshot.connectionState);
                   return Scaffold(
                     backgroundColor: Theme.of(context).colorScheme.background,
                     appBar: AppBar(

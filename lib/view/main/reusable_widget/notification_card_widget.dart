@@ -23,9 +23,8 @@ class _NotificationWidgetState extends State<NotificationWidget> {
   Widget build(BuildContext context) {
     var MyColor = Theme.of(context).extension<MyColors>()!;
     var data = widget.notification;
-    // if(widget.isContain == null){
-    //   widget.isContain = false;
-    // }
+    // final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(

@@ -21,12 +21,13 @@ class _NotificationListState extends State<NotificationList> {
   Stream<List<NotificationData?>?>? notificationDataAll;
   Stream<List<NotificationData?>?>? notificationDataBySection;
   Stream<List<NotificationData?>?>? notificationDataByBranch;
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   var userData;
+  var dataProvider;
 
   @override
   void initState() {
-    final dataProvider = Provider.of<DataProvider>(context, listen: false);
+    dataProvider = Provider.of<DataProvider>(context, listen: false);
     notificationDataAll = dataProvider.notificationAll;
     notificationDataBySection = dataProvider.notificationBySection;
     notificationDataByBranch = dataProvider.notificationByBranch;
@@ -38,7 +39,7 @@ class _NotificationListState extends State<NotificationList> {
 
   @override
   void dispose() {
-    // _dataProvider!.dispose();
+    // dataProvider.dispose();
     super.dispose();
   }
 
@@ -51,6 +52,7 @@ class _NotificationListState extends State<NotificationList> {
         : DefaultTabController(
             length: 3,
             child: Scaffold(
+              key: _scaffoldKey,
               backgroundColor: Theme.of(context).colorScheme.background,
               appBar: AppBar(
                 elevation: 0,
@@ -78,6 +80,11 @@ class _NotificationListState extends State<NotificationList> {
               body: StreamBuilder<UserData?>(
                   stream: userData,
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
                     UserData? user = snapshot.data!;
                     List<StarredPostData>? listCheck =
                         (user.starredNotifications!);
@@ -86,17 +93,14 @@ class _NotificationListState extends State<NotificationList> {
                     //     listCheck!.where((element) => element.id == "id");
                     // print(listCheck[0].fullName);
                     // print(snapshot.connectionState.);
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
+
                     if (snapshot.hasError) {
                       return const Center(
                         child: Text("Something went wrong"),
                       );
                     }
-                    if (snapshot.hasData) {
+                    if (snapshot.hasData &&
+                        snapshot.connectionState == ConnectionState.active) {
                       return TabBarView(children: [
                         Center(
                           child: StreamBuilder<List<NotificationData?>?>(

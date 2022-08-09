@@ -26,66 +26,98 @@ class _AvatarListState extends State<AvatarList> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Scaffold(
-        appBar: AppBar(
-          title: 'Select Avatar'.text.make(),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              FutureBuilder<List<FirebaseFile>>(
-                  future: futureFiles,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      var avatarList = snapshot.data!;
-                      return GridView.builder(
-                          // scrollDirection: Axis.vertical,
-                          itemCount: avatarList.length,
-                          shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 5,
-                          ),
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                setState(() {
-                                  path = avatarList[index].url;
-                                });
-                              },
-                              child: CircleAvatar(
-                                  backgroundColor: Colors.black12,
-                                  backgroundImage: CachedNetworkImageProvider(
-                                      avatarList[index].url)),
-                            ).p12();
-                          }).p12();
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else {
-                      return const Text('something went wrong');
-                    }
-                  }),
-              path == ''
-                  ? Container()
-                  : CircleAvatar(
-                      backgroundImage: CachedNetworkImageProvider(path)),
-              ElevatedButton(
-                  onPressed: _enabled == true
-                      ? () {
-                          dynamic result = DatabaseService().updateAvatar(path);
-                          if (result != null) {
-                            setState(() {
-                              error = 'success';
-                            });
-                          }
-                          Navigator.pop(context);
-                        }
-                      : null,
-                  child: 'submit'.text.make()),
-            ],
+    return Scaffold(
+      bottomNavigationBar: Material(
+        color: Theme.of(context).colorScheme.primary,
+        child: ElevatedButton(
+          onPressed: path.isEmpty
+              ? null
+              : () {
+                  dynamic result = DatabaseService().updateAvatar(path);
+                  if (result != null) {
+                    setState(() {
+                      error = 'success';
+                    });
+                  }
+                  Navigator.pop(context);
+                },
+          child: const SizedBox(
+            height: kToolbarHeight,
+            width: double.infinity,
+            child: Center(
+              child: Text(
+                'Change',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
+        ),
+      ),
+      appBar: AppBar(
+        title: 'Select Avatar'.text.make(),
+        actions: [
+          if (path.isNotEmpty)
+            CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.black12,
+                    backgroundImage: CachedNetworkImageProvider(path))
+                .p(8),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            FutureBuilder<List<FirebaseFile>>(
+                future: futureFiles,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    var avatarList = snapshot.data!;
+                    return GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        // scrollDirection: Axis.vertical,
+                        itemCount: avatarList.length,
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 5,
+                        ),
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              setState(() {
+                                path = avatarList[index].url;
+                              });
+                            },
+                            child: CircleAvatar(
+                                backgroundColor: Colors.black12,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    avatarList[index].url)),
+                          ).p12();
+                        }).p12();
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    return const Text('something went wrong');
+                  }
+                }),
+
+            // ElevatedButton(
+            //     onPressed: _enabled == true
+            //         ? () {
+            //             dynamic result = DatabaseService().updateAvatar(path);
+            //             if (result != null) {
+            //               setState(() {
+            //                 error = 'success';
+            //               });
+            //             }
+            //             Navigator.pop(context);
+            //           }
+            //         : null,
+            //     child: 'submit'.text.make()),
+          ],
         ),
       ),
     );

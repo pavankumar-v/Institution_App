@@ -3,7 +3,6 @@ import 'package:brindavan_student/provider/data_provider.dart';
 import 'package:brindavan_student/view/authentication/authenticate.dart';
 import 'package:brindavan_student/view/authentication/verify.dart';
 import 'package:brindavan_student/view/main/navigator.dart';
-import 'package:brindavan_student/view/splash_creen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +27,9 @@ class Wrapper extends StatelessWidget {
             stream: DataProvider().userData,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return SplashScreen();
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               }
               if (snapshot.connectionState == ConnectionState.active &&
                   snapshot.hasData) {
