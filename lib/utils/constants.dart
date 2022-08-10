@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../theme/theme_provider.dart';
+
 var primaryColor = Vx.hexToColor('#1B62DB');
 //LOADER
 var loader = SizedBox(
@@ -85,4 +87,41 @@ ElevatedButton btn(context, fun, value, size) {
         ),
         child: '$value'.text.size(size).make(),
       ));
+}
+
+ElevatedButton drawerBtn(
+  context,
+  func,
+  pageName,
+  value,
+  iconName,
+) {
+  var MyColor = Theme.of(context).extension<MyColors>()!;
+
+  var buttonStyle = ElevatedButton.styleFrom(
+    elevation: 10,
+    primary: Theme.of(context).backgroundColor,
+    onPrimary: Colors.grey,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+    ),
+  );
+  return ElevatedButton(
+    style: buttonStyle,
+    onPressed: () async {
+      Future.delayed(const Duration(milliseconds: 200), () async {
+        func == ""
+            ? Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => pageName))
+            : await func;
+      });
+    },
+    child: ListTile(
+      leading: Icon(
+        iconName,
+        color: MyColor.textColor,
+      ),
+      title: '$value'.text.make(),
+    ),
+  );
 }

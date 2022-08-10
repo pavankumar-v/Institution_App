@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:brindavan_student/models/user.dart';
 import 'package:brindavan_student/provider/data_provider.dart';
+import 'package:brindavan_student/utils/constants.dart';
 import 'package:brindavan_student/view/main/pages/attendanceView.dart';
 import 'package:brindavan_student/view/main/pages/demo.dart';
 import 'package:brindavan_student/view/main/pages/dynamicForms.dart';
@@ -48,11 +49,12 @@ class _NavigateState extends State<Navigate>
 
   int _currentIndex = 0;
   List<Widget> tabs = [
-    const Home(),
+    const Home(version: 0.1),
     const NotificationList(),
     const SubjectList(),
     const PlacementsView()
   ];
+  final double version = 0.1;
 
   @override
   void dispose() {
@@ -92,7 +94,7 @@ class _NavigateState extends State<Navigate>
     super.build(context);
 
     return loading
-        ? Center(child: CircularProgressIndicator())
+        ? const Center(child: CircularProgressIndicator())
         : StreamBuilder<UserData?>(
             stream: data,
             builder: (context, snapshot) {
@@ -132,22 +134,14 @@ class _NavigateState extends State<Navigate>
                               icon: Icon(Icons.home_rounded),
                               label: 'Home',
                             ),
-
                             BottomNavigationBarItem(
                               icon: Icon(Icons.notifications),
                               label: 'Notification',
                             ),
-
                             BottomNavigationBarItem(
                               icon: Icon(Icons.article_rounded),
                               label: 'Subjects',
                             ),
-                            // BottomNavigationBarItem(
-                            //   icon: Icon(
-                            //     Icons.business_outlined,
-                            //   ),
-                            //   label: 'Placements',
-                            // ),
                           ],
                           onTap: (index) {
                             setState(() {
@@ -212,111 +206,46 @@ class _NavigateState extends State<Navigate>
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        ElevatedButton(
-                                          style: buttonStyle,
-                                          onPressed: () {
-                                            Future.delayed(
-                                                const Duration(
-                                                    milliseconds: 200), () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ProfilePage(
-                                                            userData: userData,
-                                                            imgUrl: imgUrl,
-                                                          )));
-                                            });
-                                          },
-                                          child: ListTile(
-                                            leading: Icon(
-                                              Icons.person_rounded,
-                                              color: MyColor.textColor,
-                                            ),
-                                            title: 'Profile'.text.make(),
-                                          ),
-                                        ).p12(),
-                                        ElevatedButton(
-                                          style: buttonStyle,
-                                          onPressed: () {
-                                            Future.delayed(
-                                                const Duration(
-                                                    milliseconds: 200), () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const ThemeSwitcher()));
-                                            });
-                                          },
-                                          child: ListTile(
-                                            leading: Icon(
-                                              Icons.palette_rounded,
-                                              color: MyColor.textColor,
-                                            ),
-                                            title: 'Theme'.text.make(),
-                                          ),
-                                        ).p12(),
-                                        ElevatedButton(
-                                          style: buttonStyle,
-                                          onPressed: () {
-                                            Future.delayed(
-                                                const Duration(
-                                                    milliseconds: 200), () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Attendance(
-                                                            userData: userData,
-                                                          )));
-                                            });
-                                          },
-                                          child: ListTile(
-                                            leading: Icon(
-                                              Icons.app_registration_rounded,
-                                              color: MyColor.textColor,
-                                            ),
-                                            title: 'Attendace'.text.make(),
-                                          ),
-                                        ).p12(),
-                                        ElevatedButton(
-                                          style: buttonStyle,
-                                          onPressed: () {
-                                            Future.delayed(
-                                                const Duration(
-                                                    milliseconds: 200), () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const StarredNotification()));
-                                            });
-                                          },
-                                          child: ListTile(
-                                            leading: Icon(
-                                              Icons.bookmark,
-                                              color: MyColor.textColor,
-                                            ),
-                                            title: 'Saved'.text.make(),
-                                          ),
-                                        ).p12(),
-                                        ElevatedButton(
-                                          style: buttonStyle,
-                                          onPressed: () {
-                                            Future.delayed(
-                                                const Duration(
-                                                    milliseconds: 200), () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const DynamicForms()));
-                                            });
-                                          },
-                                          child: ListTile(
-                                            leading: Icon(
-                                              Icons.description_rounded,
-                                              color: MyColor.textColor,
-                                            ),
-                                            title: 'Forms'.text.make(),
-                                          ),
-                                        ).p12(),
+                                        drawerBtn(
+                                                context,
+                                                "",
+                                                ProfilePage(
+                                                  userData: userData,
+                                                  imgUrl: imgUrl,
+                                                ),
+                                                "Profile",
+                                                Icons.person_rounded)
+                                            .p12(),
+                                        drawerBtn(
+                                                context,
+                                                "",
+                                                const ThemeSwitcher(),
+                                                "Theme",
+                                                Icons.palette_rounded)
+                                            .p12(),
+                                        drawerBtn(
+                                                context,
+                                                "",
+                                                Attendance(
+                                                  userData: userData,
+                                                ),
+                                                "Attendance",
+                                                Icons.app_registration_rounded)
+                                            .p12(),
+                                        drawerBtn(
+                                                context,
+                                                "",
+                                                const StarredNotification(),
+                                                "Saved",
+                                                Icons.bookmark)
+                                            .p12(),
+                                        drawerBtn(
+                                                context,
+                                                "",
+                                                const DynamicForms(),
+                                                "Forms",
+                                                Icons.description_rounded)
+                                            .p12(),
                                         ElevatedButton(
                                           style: buttonStyle,
                                           onPressed: () async {
@@ -338,7 +267,7 @@ class _NavigateState extends State<Navigate>
                                             title: 'Sign Out'.text.make(),
                                           ),
                                         ).p12(),
-                                        'Version 1.0.0'
+                                        '$version'
                                             .text
                                             .color(Theme.of(context).hintColor)
                                             .hairLine

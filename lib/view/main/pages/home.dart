@@ -20,13 +20,13 @@ import '../../../theme/theme_provider.dart';
 import 'demo.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final double version;
+  const Home({Key? key, required this.version}) : super(key: key);
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  late double version;
   String? _timeString;
   Timer? timer;
   Future<dynamic>? app;
@@ -41,7 +41,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    version = 0.1;
     final dataProvider = Provider.of<DataProvider>(context, listen: false);
     app = dataProvider.appConfig;
 
@@ -137,7 +136,7 @@ class _HomeState extends State<Home> {
                                 children: [
                                   "Quick Access".text.bold.lg.make(),
                                   const Spacer(),
-                                  if (app["version"] > version)
+                                  if (app["version"] > widget.version)
                                     ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           shape: const StadiumBorder(),
