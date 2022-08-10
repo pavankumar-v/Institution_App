@@ -267,7 +267,7 @@ class _NavigateState extends State<Navigate>
                                             title: 'Sign Out'.text.make(),
                                           ),
                                         ).p12(),
-                                        '$version'
+                                        'version $version'
                                             .text
                                             .color(Theme.of(context).hintColor)
                                             .hairLine
