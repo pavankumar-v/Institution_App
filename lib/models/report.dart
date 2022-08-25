@@ -1,4 +1,5 @@
 class Report {
+  String? id;
   String name;
   String uid;
   String title;
@@ -10,6 +11,7 @@ class Report {
   String remarks;
 
   Report({
+    this.id,
     required this.name,
     required this.uid,
     required this.title,
@@ -21,8 +23,9 @@ class Report {
     required this.remarks,
   });
 
-  factory Report.fromJson(Map<String, dynamic> json) {
+  factory Report.fromJson(Map<String, dynamic> json, String id) {
     return Report(
+      id: id,
       name: json['name'],
       uid: json['uid'],
       title: json['title'],

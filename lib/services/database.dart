@@ -299,8 +299,9 @@ class DatabaseService {
           .orderBy("createdAt")
           .where("uid", isEqualTo: _auth.currentUser!.uid)
           .get()
-          .then((doc) =>
-              doc.docs.map((doc) => Report.fromJson(doc.data())).toList());
+          .then((doc) => doc.docs
+              .map((doc) => Report.fromJson(doc.data(), doc.id))
+              .toList());
       return result;
     } catch (e) {
       print(e);

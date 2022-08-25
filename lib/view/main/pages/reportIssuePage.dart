@@ -153,9 +153,7 @@ class _ReportIssueState extends State<ReportIssue> {
                 enabledBorder: enabledBorder,
                 fillColor: fillColor),
             onChanged: (val) {
-              setState(() {
-                report.attactments = val.trim().split(",");
-              });
+              report.attactments = val.trim().split(",");
             },
           ).py12(),
           TextFormField(
