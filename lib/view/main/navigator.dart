@@ -10,6 +10,7 @@ import 'package:brindavan_student/view/main/pages/home.dart';
 import 'package:brindavan_student/view/main/pages/notification.dart';
 import 'package:brindavan_student/view/main/pages/placementView.dart';
 import 'package:brindavan_student/view/main/pages/profile_page.dart';
+import 'package:brindavan_student/view/main/pages/reportIssuePage.dart';
 import 'package:brindavan_student/view/main/pages/starredNotification.dart';
 import 'package:brindavan_student/view/main/pages/subject_list.dart';
 import 'package:brindavan_student/view/main/pages/theme.dart';
@@ -246,6 +247,16 @@ class _NavigateState extends State<Navigate>
                                                 "Forms",
                                                 Icons.description_rounded)
                                             .p12(),
+                                        drawerBtn(
+                                                context,
+                                                "",
+                                                ReportIssue(
+                                                  userData: userData,
+                                                  user: user,
+                                                ),
+                                                "Help",
+                                                Icons.help_outlined)
+                                            .p12(),
                                         ElevatedButton(
                                           style: buttonStyle,
                                           onPressed: () async {
@@ -256,7 +267,7 @@ class _NavigateState extends State<Navigate>
                                               setState(() {
                                                 loading = true;
                                               });
-                                              await _auth.signOut();
+                                              signout(_auth);
                                             });
                                           },
                                           child: ListTile(
@@ -264,7 +275,11 @@ class _NavigateState extends State<Navigate>
                                               Icons.logout_rounded,
                                               color: MyColor.textColor,
                                             ),
-                                            title: 'Sign Out'.text.make(),
+                                            title: 'Sign Out'
+                                                .text
+                                                .bold
+                                                .letterSpacing(1)
+                                                .make(),
                                           ),
                                         ).p12(),
                                         'version $version'
@@ -302,7 +317,7 @@ class _NavigateState extends State<Navigate>
                                                 .make(),
                                           ),
                                         ).p12(),
-                                      ])).p12()
+                                      ])).card.rounded.make().p(8)
                             ],
                           ),
                         )),
@@ -312,5 +327,9 @@ class _NavigateState extends State<Navigate>
                 return const Loading();
               }
             });
+  }
+
+  signout(auth) async {
+    await auth.signOut();
   }
 }

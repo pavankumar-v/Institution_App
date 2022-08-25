@@ -5,6 +5,8 @@ import 'package:brindavan_student/models/user.dart';
 import 'package:brindavan_student/services/database.dart';
 import 'package:flutter/material.dart';
 
+import '../models/report.dart';
+
 class DataProvider with ChangeNotifier {
   final String? branch;
   final String? sem;
@@ -28,4 +30,5 @@ class DataProvider with ChangeNotifier {
       DatabaseService().getNotifications(["all"], "notifications");
 
   Future<dynamic> get appConfig => DatabaseService().appConfig();
+  Future<List<Report>?>? get tickets => DatabaseService().getTickets();
 }

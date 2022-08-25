@@ -72,6 +72,38 @@ SnackBar snackbar(context, message, duration) {
   return snackBar;
 }
 
+TextFormField input(context, value, label, func, validatorFun, regEx) {
+  setVal(val) {
+    return val;
+  }
+
+  return TextFormField(
+    decoration: textInputDecoration.copyWith(
+      hintText: '$label',
+      labelText: 'Enter $label',
+      fillColor: Theme.of(context).colorScheme.background,
+      enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).hintColor)),
+    ),
+    onChanged: (val) {
+      // setState(() {
+      //   email = val;
+      // });
+      setVal(val);
+    },
+    validator: (val) {
+      if (val!.isEmpty) {
+        return 'This field is required';
+      } else if (!RegExp("$regEx").hasMatch(val)) {
+        return 'Enter a valid email';
+      }
+      return null;
+      // validatorFun;
+      // return null;
+    },
+  );
+}
+
 ElevatedButton btn(context, fun, value, size) {
   return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -110,10 +142,12 @@ ElevatedButton drawerBtn(
     style: buttonStyle,
     onPressed: () async {
       Future.delayed(const Duration(milliseconds: 200), () async {
-        func == ""
-            ? Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => pageName))
-            : await func;
+        if (func == "") {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => pageName));
+        } else {
+          func;
+        }
       });
     },
     child: ListTile(
@@ -121,7 +155,7 @@ ElevatedButton drawerBtn(
         iconName,
         color: MyColor.textColor,
       ),
-      title: '$value'.text.make(),
+      title: '$value'.text.bold.letterSpacing(1).make(),
     ),
   );
 }

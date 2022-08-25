@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:brindavan_student/models/dynamicFormModel.dart';
 import 'package:brindavan_student/models/notificationdata.dart';
+import 'package:brindavan_student/models/report.dart';
 import 'package:brindavan_student/models/subjects.dart';
 import 'package:brindavan_student/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +16,7 @@ class DatabaseService {
   String? branch;
   String? sem;
   String? section;
+
   DatabaseService({this.branch, this.sem, this.section});
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
@@ -260,5 +262,49 @@ class DatabaseService {
         })
         .values
         .toList();
+  }
+
+  dynamic raiseTicket(Report reportData) async {
+    try {
+      var result = await _db
+          .collection("tickets")
+          .add(reportData.toMap())
+          .then((value) => true)
+          .catchError((err) => false);
+      return result;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getIssues() async {
+    try {
+      Map<String, dynamic>? result = await _db
+          .collection("app_configurations")
+          .doc("report")
+          .get()
+          .then((doc) => doc.data());
+      return result;
+    } catch (e) {
+      print(e);
+      return {};
+    }
+  }
+
+  Future<List<Report>?>? getTickets() async {
+    try {
+      List<Report>? result = await _db
+          .collection("tickets")
+          .orderBy("createdAt")
+          .where("uid", isEqualTo: _auth.currentUser!.uid)
+          .get()
+          .then((doc) =>
+              doc.docs.map((doc) => Report.fromJson(doc.data())).toList());
+      return result;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 }

@@ -112,7 +112,6 @@ class _StarredNotificationState extends State<StarredNotification> {
                         ),
                         child: IconButton(
                           // splashRadius: 30,
-
                           color:
                               Theme.of(context).colorScheme.onPrimaryContainer,
                           splashRadius: 23,

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:brindavan_student/models/subjects.dart';
 import 'package:brindavan_student/models/user.dart';
 import 'package:brindavan_student/provider/data_provider.dart';
+import 'package:brindavan_student/view/main/pages/AppUpdate.dart';
 import 'package:brindavan_student/view/main/pages/attendanceView.dart';
 import 'package:brindavan_student/view/main/pages/dynamicForms.dart';
 import 'package:brindavan_student/view/main/pages/starredNotification.dart';
@@ -72,17 +73,16 @@ class _HomeState extends State<Home> {
           }
           var app = snapshot.data;
 
-          // if (app["version"] > version && app["isImportant"]) {
-          //   Navigator.of(context).push(MaterialPageRoute(
-          //       builder: (context) => AppUpdate(
-          //             appUpdateData: app,
-          //           )));
-          // }
+          if (app["version"] > widget.version && app["isImportant"]) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AppUpdate(
+                      appUpdateData: app,
+                    )));
+          }
 
           Uri url = Platform.isAndroid
               ? Uri.parse(app["androidLink"])
               : Uri.parse(app["iosLink"]);
-          print(app["androidLink"]);
 
           var streamBuilder = StreamBuilder<UserData?>(
               stream: data,
@@ -96,7 +96,6 @@ class _HomeState extends State<Home> {
                 }
 
                 if (snapshot.hasData) {
-                  print(snapshot.connectionState);
                   return Scaffold(
                     backgroundColor: Theme.of(context).colorScheme.background,
                     appBar: AppBar(
